@@ -66,11 +66,11 @@ class ControlCodeParser extends EventEmitter implements ReadableStreamInterface
         $this->buffer .= $data;
 
         while ($this->buffer !== '') {
-            // search CSI start
-            $pos = strpos($this->buffer, "\x1B[");
+            // search ESC (\x1B = \033)
+            $esc = strpos($this->buffer, "\x1B");
 
-            // no CSI found, emit whole buffer as data
-            if ($pos === false) {
+            // no ESC found, emit whole buffer as data
+            if ($esc === false) {
                 $data = $this->buffer;
                 $this->buffer = '';
 
@@ -78,13 +78,32 @@ class ControlCodeParser extends EventEmitter implements ReadableStreamInterface
                 return;
             }
 
-            // CSI found somewhere inbetween, emit everything before CSI as data
-            if ($pos !== 0) {
-                $data = substr($this->buffer, 0, $pos);
-                $this->buffer = substr($this->buffer, $pos);
+            // ESC found somewhere inbetween, emit everything before ESC as data
+            if ($esc !== 0) {
+                $data = substr($this->buffer, 0, $esc);
+                $this->buffer = substr($this->buffer, $esc);
 
                 $this->emit('data', array($data));
             }
+
+            // ESC is now at start of buffer
+
+            // check following byte to determine type
+            if (!isset($this->buffer[1])) {
+                // type currently unknown, wait for next data chunk
+                break;
+            }
+
+            if ($this->buffer[1] === '[') {
+                // followed by "[" means it's CSI
+            } else {
+                $data = substr($this->buffer, 0, 2);
+                $this->buffer = (string)substr($this->buffer, 2);
+
+                $this->emit('data', array($data));
+                continue;
+            }
+
 
             // CSI is now at the start of the buffer, search final character
             $found = false;

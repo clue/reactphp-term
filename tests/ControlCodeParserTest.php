@@ -44,6 +44,33 @@ class ControlCodeParserTest extends TestCase
         $this->input->emit('data', array("\x1B[A"));
     }
 
+    public function testEmitsChunkedStartCsiAsOneChunk()
+    {
+        $this->parser->on('data', $this->expectCallableNever());
+        $this->parser->on('csi', $this->expectCallableOnceWith("\x1B[A"));
+
+        $this->input->emit('data', array("\x1B"));
+        $this->input->emit('data', array("[A"));
+    }
+
+    public function testEmitsChunkedMiddleCsiAsOneChunk()
+    {
+        $this->parser->on('data', $this->expectCallableNever());
+        $this->parser->on('csi', $this->expectCallableOnceWith("\x1B[A"));
+
+        $this->input->emit('data', array("\x1B["));
+        $this->input->emit('data', array("A"));
+    }
+
+    public function testEmitsChunkedEndCsiAsOneChunk()
+    {
+        $this->parser->on('data', $this->expectCallableNever());
+        $this->parser->on('csi', $this->expectCallableOnceWith("\x1B[2A"));
+
+        $this->input->emit('data', array("\x1B[2"));
+        $this->input->emit('data', array("A"));
+    }
+
     public function testEmitsCsiAndData()
     {
         $this->parser->on('data', $this->expectCallableOnceWith("hello"));
@@ -71,5 +98,18 @@ class ControlCodeParserTest extends TestCase
         $this->input->emit('data', array("hello\x1B[Aworld"));
 
         $this->assertEquals('helloworld', $buffer);
+    }
+
+    public function testEmitsNonCsiAsData()
+    {
+        $buffer = '';
+        $this->parser->on('data', function ($chunk) use (&$buffer) {
+            $buffer .= $chunk;
+        });
+        $this->parser->on('csi', $this->expectCallableNever());
+
+        $this->input->emit('data', array("hello\x1B]world"));
+
+        $this->assertEquals("hello\x1B]world", $buffer);
     }
 }
