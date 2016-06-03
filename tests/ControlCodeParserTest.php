@@ -112,4 +112,79 @@ class ControlCodeParserTest extends TestCase
 
         $this->assertEquals("hello\x1B]world", $buffer);
     }
+
+    public function testClosingInputWillCloseParser()
+    {
+        $this->parser->on('close', $this->expectCallableOnce());
+
+        $this->input->close();
+
+        $this->assertFalse($this->parser->isReadable());
+    }
+
+    public function testClosingParserWillCloseInput()
+    {
+        $this->input = $this->getMock('React\Stream\ReadableStreamInterface');
+        $this->input->expects($this->once())->method('isReadable')->willReturn(true);
+        $this->input->expects($this->once())->method('close');
+
+        $this->parser = new ControlCodeParser($this->input);
+        $this->parser->on('close', $this->expectCallableOnce());
+
+        $this->parser->close();
+
+        $this->assertFalse($this->parser->isReadable());
+    }
+
+    public function testClosingParserMultipleTimesWillOnlyCloseOnce()
+    {
+        $this->input = $this->getMock('React\Stream\ReadableStreamInterface');
+        $this->input->expects($this->once())->method('isReadable')->willReturn(true);
+        $this->input->expects($this->once())->method('close');
+
+        $this->parser = new ControlCodeParser($this->input);
+        $this->parser->on('close', $this->expectCallableOnce());
+
+        $this->parser->close();
+        $this->parser->close();
+    }
+
+    public function testPassingClosedInputToParserWillCloseParser()
+    {
+        $this->input = $this->getMock('React\Stream\ReadableStreamInterface');
+        $this->input->expects($this->once())->method('isReadable')->willReturn(false);
+
+        $this->parser = new ControlCodeParser($this->input);
+
+        $this->assertFalse($this->parser->isReadable());
+    }
+
+    public function testWillForwardPauseToInput()
+    {
+        $this->input = $this->getMock('React\Stream\ReadableStreamInterface');
+        $this->input->expects($this->once())->method('pause');
+
+        $this->parser = new ControlCodeParser($this->input);
+
+        $this->parser->pause();
+    }
+
+    public function testWillForwardResumeToInput()
+    {
+        $this->input = $this->getMock('React\Stream\ReadableStreamInterface');
+        $this->input->expects($this->once())->method('resume');
+
+        $this->parser = new ControlCodeParser($this->input);
+
+        $this->parser->resume();
+    }
+
+    public function testPipeWillReturnDestStream()
+    {
+        $dest = $this->getMock('React\Stream\WritableStreamInterface');
+
+        $ret = $this->parser->pipe($dest);
+
+        $this->assertSame($dest, $ret);
+    }
 }

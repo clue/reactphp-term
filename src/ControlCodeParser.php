@@ -27,7 +27,7 @@ class ControlCodeParser extends EventEmitter implements ReadableStreamInterface
 
     public function isReadable()
     {
-        return $this->input->isReadable();
+        return !$this->closed && $this->input->isReadable();
     }
 
     public function pause()
