@@ -33,14 +33,28 @@ These chunks do not necessarily represent complete control code byte sequences,
 as a sequence may be broken up into multiple chunks.
 This class reassembles these sequences by buffering incomplete ones.
 
-One of the most common forms of control code sequences is
-[CSI (Control Sequence Introducer)](https://en.wikipedia.org/wiki/ANSI_escape_code#CSI_codes).
-For example, CSI is used to print colored console output, also known as
-"ANSI color codes" or the more technical term
-[SGR (Select Graphic Rendition)](https://en.wikipedia.org/wiki/ANSI_escape_code#graphics).
-CSI codes also appear on `STDIN`, for example when the user hits special keys,
-such as the cursor, `HOME`, `END` etc. keys.
-Each CSI code gets emitted as a `csi` event with its raw byte sequence:
+The following [C1 control codes](https://en.wikipedia.org/wiki/C0_and_C1_control_codes#C1_set)
+are supported as defined in [ISO/IEC 2022](https://en.wikipedia.org/wiki/ISO/IEC_2022):
+
+* [CSI (Control Sequence Introducer)](https://en.wikipedia.org/wiki/ANSI_escape_code#CSI_codes)
+  is one of the most common forms of control code sequences.
+  For example, CSI is used to print colored console output, also known as
+  "ANSI color codes" or the more technical term
+  [SGR (Select Graphic Rendition)](https://en.wikipedia.org/wiki/ANSI_escape_code#graphics).
+  CSI codes also appear on `STDIN`, for example when the user hits special keys,
+  such as the cursor, `HOME`, `END` etc. keys.
+
+* OSC (Operating System Command)
+  is another common form of control code sequences.
+  For example, OSC is used to change the window title or window icon.
+
+* APC (Application Program-Control)
+
+* DPS (Device-Control string)
+
+* PM (Privacy Message)
+
+Each code sequence gets emitted with a dedicated event with its raw byte sequence:
 
 ```php
 $stream->on('csi', function ($sequence) {
@@ -50,16 +64,19 @@ $stream->on('csi', function ($sequence) {
         echo 'cursor DOWN pressed';
     }
 });
+
+$stream->on('osc', function ($sequence) { … });
+$stream->on('apc', function ($sequence) { … });
+$stream->on('dps', function ($sequence) { … });
+$stream->on('pm', function ($sequence) { … });
 ```
 
-Another common form of control code sequences is OSC (Operating System Command).
-For example, OSC is used to change the window title or window icon.
-Each OSC code gets emitted as an `osc` event with its raw byte sequence:
+Other lesser known [C1 control codes](https://en.wikipedia.org/wiki/C0_and_C1_control_codes#C1_set)
+not listed above are supported by just emitting their 2-byte sequence.
+Each generic C1 code gets emitted as an `c1` event with its raw 2-byte sequence:
 
 ```php
-$stream->on('osc', function ($sequence) {
-    // handle byte sequence
-});
+$stream->on('c1', function ($sequence) { … });
 ```
 
 ## Install
