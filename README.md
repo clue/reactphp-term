@@ -79,6 +79,19 @@ Each generic C1 code gets emitted as an `c1` event with its raw 2-byte sequence:
 $stream->on('c1', function ($sequence) { … });
 ```
 
+All other [C0 control codes](https://en.wikipedia.org/wiki/C0_and_C1_control_codes#C0_.28ASCII_and_derivatives.29),
+also known as [ASCII control codes](https://en.wikipedia.org/wiki/ASCII#ASCII_control_code_chart),
+are supported by just emitting their single-byte value.
+Each generic C0 code gets emitted as an `c0` event with its raw single-byte value:
+
+```php
+$stream->on('c0', function ($code) {
+    if ($code === "\n") {
+        echo 'ENTER pressed';
+    }
+});
+```
+
 ## Install
 
 The recommended way to install this library is [through Composer](https://getcomposer.org).

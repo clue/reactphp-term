@@ -25,6 +25,8 @@ $decoder = function ($code) {
 
 $parser->on('csi', $decoder);
 $parser->on('osc', $decoder);
+$parser->on('c1', $decoder);
+$parser->on('c0', $decoder);
 
 $parser->on('data', function ($bytes) {
     echo 'Data: ' . $bytes . PHP_EOL;
