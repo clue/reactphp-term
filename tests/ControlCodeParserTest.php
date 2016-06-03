@@ -100,20 +100,6 @@ class ControlCodeParserTest extends TestCase
         $this->assertEquals('helloworld', $buffer);
     }
 
-    public function testEmitsNonCsiAsData()
-    {
-        $buffer = '';
-        $this->parser->on('data', function ($chunk) use (&$buffer) {
-            $buffer .= $chunk;
-        });
-        $this->parser->on('csi', $this->expectCallableNever());
-
-        $this->input->emit('data', array("hello\x1B?world"));
-
-        $this->assertEquals("hello\x1B?world", $buffer);
-    }
-
-
     public function testEmitsOscBelAsOneChunk()
     {
         $this->parser->on('data', $this->expectCallableNever());
@@ -146,6 +132,30 @@ class ControlCodeParserTest extends TestCase
 
         $this->input->emit('data', array("\x1B]as"));
         $this->input->emit('data', array("d\x07"));
+    }
+
+    public function testEmitsDpsStAsOneChunk()
+    {
+        $this->parser->on('data', $this->expectCallableNever());
+        $this->parser->on('dps', $this->expectCallableOnceWith("\x1BPasd\x1B\\"));
+
+        $this->input->emit('data', array("\x1BPasd\x1B\\"));
+    }
+
+    public function testDoesNotEmitDpsIfItDoesNotEndWithSt()
+    {
+        $this->parser->on('data', $this->expectCallableNever());
+        $this->parser->on('dps', $this->expectCallableNever());
+
+        $this->input->emit('data', array("\x1BPasd\x07"));
+    }
+
+    public function testEmitsUnknownC1AsOneChunk()
+    {
+        $this->parser->on('data', $this->expectCallableNever());
+        $this->parser->on('c1', $this->expectCallableOnceWith("\x1B="));
+
+        $this->input->emit('data', array("\x1B="));
     }
 
     public function testClosingInputWillCloseParser()
