@@ -15,13 +15,16 @@ shell_exec('stty -icanon -echo');
 $stdin = new Stream(STDIN, $loop);
 $parser = new ControlCodeParser($stdin);
 
-$parser->on('csi', function ($code) {
+$decoder = function ($code) {
     echo 'Code:';
     for ($i = 0; isset($code[$i]); ++$i) {
         echo sprintf(" %02X", ord($code[$i]));
     }
     echo PHP_EOL;
-});
+};
+
+$parser->on('csi', $decoder);
+$parser->on('osc', $decoder);
 
 $parser->on('data', function ($bytes) {
     echo 'Data: ' . $bytes . PHP_EOL;

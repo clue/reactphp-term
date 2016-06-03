@@ -52,6 +52,16 @@ $stream->on('csi', function ($sequence) {
 });
 ```
 
+Another common form of control code sequences is OSC (Operating System Command).
+For example, OSC is used to change the window title or window icon.
+Each OSC code gets emitted as an `osc` event with its raw byte sequence:
+
+```php
+$stream->on('osc', function ($sequence) {
+    // handle byte sequence
+});
+```
+
 ## Install
 
 The recommended way to install this library is [through Composer](https://getcomposer.org).

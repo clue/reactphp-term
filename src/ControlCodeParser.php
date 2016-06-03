@@ -89,38 +89,59 @@ class ControlCodeParser extends EventEmitter implements ReadableStreamInterface
             }
 
             // ESC is now at start of buffer
-
             // check following byte to determine type
             if (!isset($this->buffer[1])) {
                 // type currently unknown, wait for next data chunk
                 break;
             }
 
+            $found = false;
+
             if ($this->buffer[1] === '[') {
                 // followed by "[" means it's CSI
+
+                // CSI is now at the start of the buffer, search final character
+                for ($i = 2; isset($this->buffer[$i]); ++$i) {
+                    $code = ord($this->buffer[$i]);
+
+                    // final character between \x40-\x7E
+                    if ($code >= 64 && $code <= 126) {
+                        $data = substr($this->buffer, 0, $i + 1);
+                        $this->buffer = (string)substr($this->buffer, $i + 1);
+
+                        $this->emit('csi', array($data));
+                        $found = true;
+                        break;
+                    }
+                }
+            } elseif ($this->buffer[1] === ']') {
+                // followed by "]" means it's OSC (Operating System Controls)
+
+                // terminated by ST or BEL (whichever comes first)
+                $st = strpos($this->buffer, "\x1B\\");
+                $bel = strpos($this->buffer, "\x07");
+
+                if ($st !== false && ($bel === false || $bel > $st)) {
+                    // ST comes before BEL or no BEL found
+                    $data = substr($this->buffer, 0, $st + 2);
+                    $this->buffer = (string)substr($this->buffer, $st + 2);
+
+                    $this->emit('osc', array($data));
+                    $found = true;
+                } elseif ($bel !== false) {
+                    // BEL comes before ST or no ST found
+                    $data = substr($this->buffer, 0, $bel + 1);
+                    $this->buffer = (string)substr($this->buffer, $bel + 1);
+
+                    $this->emit('osc', array($data));
+                    $found = true;
+                }
             } else {
                 $data = substr($this->buffer, 0, 2);
                 $this->buffer = (string)substr($this->buffer, 2);
 
                 $this->emit('data', array($data));
                 continue;
-            }
-
-
-            // CSI is now at the start of the buffer, search final character
-            $found = false;
-            for ($i = 2; isset($this->buffer[$i]); ++$i) {
-                $code = ord($this->buffer[$i]);
-
-                // final character between \x40-x7E
-                if ($code >= 64 && $code <= 126) {
-                    $data = substr($this->buffer, 0, $i + 1);
-                    $this->buffer = (string)substr($this->buffer, $i + 1);
-
-                    $this->emit('csi', array($data));
-                    $found = true;
-                    break;
-                }
             }
 
             // no final character found => wait for next data chunk

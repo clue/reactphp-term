@@ -108,9 +108,44 @@ class ControlCodeParserTest extends TestCase
         });
         $this->parser->on('csi', $this->expectCallableNever());
 
-        $this->input->emit('data', array("hello\x1B]world"));
+        $this->input->emit('data', array("hello\x1B?world"));
 
-        $this->assertEquals("hello\x1B]world", $buffer);
+        $this->assertEquals("hello\x1B?world", $buffer);
+    }
+
+
+    public function testEmitsOscBelAsOneChunk()
+    {
+        $this->parser->on('data', $this->expectCallableNever());
+        $this->parser->on('osc', $this->expectCallableOnceWith("\x1B]asd\x07"));
+
+        $this->input->emit('data', array("\x1B]asd\x07"));
+    }
+
+    public function testEmitsOscStAsOneChunk()
+    {
+        $this->parser->on('data', $this->expectCallableNever());
+        $this->parser->on('osc', $this->expectCallableOnceWith("\x1B]asd\x1B\\"));
+
+        $this->input->emit('data', array("\x1B]asd\x1B\\"));
+    }
+
+    public function testEmitsChunkedStartOscAsOneChunk()
+    {
+        $this->parser->on('data', $this->expectCallableNever());
+        $this->parser->on('osc', $this->expectCallableOnceWith("\x1B]asd\x07"));
+
+        $this->input->emit('data', array("\x1B"));
+        $this->input->emit('data', array("]asd\x07"));
+    }
+
+    public function testEmitsChunkedMiddleOscAsOneChunk()
+    {
+        $this->parser->on('data', $this->expectCallableNever());
+        $this->parser->on('osc', $this->expectCallableOnceWith("\x1B]asd\x07"));
+
+        $this->input->emit('data', array("\x1B]as"));
+        $this->input->emit('data', array("d\x07"));
     }
 
     public function testClosingInputWillCloseParser()
