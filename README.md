@@ -2,6 +2,13 @@
 
 Streaming terminal emulator, built on top of React PHP
 
+**Table of Contents**
+
+* [Usage](#usage)
+  * [ControlCodeParser](#controlcodeparser)
+* [Install](#install)
+* [License](#license)
+
 > Note: This project is in early alpha stage! Feel free to report any issues you encounter.
 
 ## Usage
