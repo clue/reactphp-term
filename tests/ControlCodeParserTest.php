@@ -187,4 +187,37 @@ class ControlCodeParserTest extends TestCase
 
         $this->assertSame($dest, $ret);
     }
+
+    public function testEmitsErrorEventAndCloses()
+    {
+        $this->parser->on('error', $this->expectCallableOnce());
+        $this->parser->on('close', $this->expectCallableOnce());
+
+        $this->input->emit('error', array(new \RuntimeException()));
+
+        $this->assertFalse($this->parser->isReadable());
+    }
+
+    public function testEmitsEndEventAndCloses()
+    {
+        $this->parser->on('end', $this->expectCallableOnce());
+        $this->parser->on('close', $this->expectCallableOnce());
+
+        $this->input->emit('end', array());
+
+        $this->assertFalse($this->parser->isReadable());
+    }
+
+    public function testEmitsErrorWhenEndEventHasWillBufferedData()
+    {
+        $this->parser->on('end', $this->expectCallableNever());
+        $this->parser->on('error', $this->expectCallableOnce());
+        $this->parser->on('close', $this->expectCallableOnce());
+
+        // emit incomplete sequence start and then end
+        $this->input->emit('data', array("\x1B"));
+        $this->input->emit('end', array());
+
+        $this->assertFalse($this->parser->isReadable());
+    }
 }

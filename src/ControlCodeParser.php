@@ -22,6 +22,8 @@ class ControlCodeParser extends EventEmitter implements ReadableStreamInterface
         }
 
         $this->input->on('data', array($this, 'handleData'));
+        $this->input->on('end', array($this, 'handleEnd'));
+        $this->input->on('error', array($this, 'handleError'));
         $this->input->on('close', array($this, 'close'));
     }
 
@@ -126,5 +128,25 @@ class ControlCodeParser extends EventEmitter implements ReadableStreamInterface
                 break;
             }
         }
+    }
+
+    /** @internal */
+    public function handleEnd()
+    {
+        if (!$this->closed) {
+            if ($this->buffer === '') {
+                $this->emit('end');
+            } else {
+                $this->emit('error', array(new \RuntimeException('Stream ended with incomplete control code sequence in buffer')));
+            }
+            $this->close();
+        }
+    }
+
+    /** @internal */
+    public function handleError(\Exception $e)
+    {
+        $this->emit('error', array($e));
+        $this->close();
     }
 }
