@@ -96,11 +96,18 @@ class ControlCodeParser extends EventEmitter implements ReadableStreamInterface
         $this->buffer .= $data;
 
         while ($this->buffer !== '') {
-            // search ESC (\x1B = \033)
-            $esc = strpos($this->buffer, "\x1B");
+            // search for first control character (C0 and DEL)
+            $c0 = false;
+            for ($i = 0; isset($this->buffer[$i]); ++$i) {
+                $code = ord($this->buffer[$i]);
+                if ($code < 0x20 || $code === 0x7F) {
+                    $c0 = $i;
+                    break;
+                }
+            }
 
-            // no ESC found, emit whole buffer as data
-            if ($esc === false) {
+            // no C0 found, emit whole buffer as data
+            if ($c0 === false) {
                 $data = $this->buffer;
                 $this->buffer = '';
 
@@ -108,15 +115,25 @@ class ControlCodeParser extends EventEmitter implements ReadableStreamInterface
                 return;
             }
 
-            // ESC found somewhere inbetween, emit everything before ESC as data
-            if ($esc !== 0) {
-                $data = substr($this->buffer, 0, $esc);
-                $this->buffer = substr($this->buffer, $esc);
+            // C0 found somewhere inbetween, emit everything before C0 as data
+            if ($c0 !== 0) {
+                $data = substr($this->buffer, 0, $c0);
+                $this->buffer = substr($this->buffer, $c0);
 
                 $this->emit('data', array($data));
             }
 
-            // ESC is now at start of buffer
+            // C0 is now at start of buffer
+            // check if this is a normal C0 code or an ESC (\x1B = \033)
+            // normal C0 will be emitted, ESC will be parsed further
+            if ($this->buffer[0] !== "\x1B") {
+                $data = $this->buffer[0];
+                $this->buffer = (string)substr($this->buffer, 1);
+
+                $this->emit('c0', array($data));
+                break;
+            }
+
             // check following byte to determine type
             if (!isset($this->buffer[1])) {
                 // type currently unknown, wait for next data chunk

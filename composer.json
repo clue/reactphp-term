@@ -1,7 +1,7 @@
 {
     "name": "clue/term-react",
     "description": "Streaming terminal emulator, built on top of React PHP",
-    "keywords": ["terminal", "control codes", "xterm", "csi", "osc", "apc", "dps", "pm", "c1", "streaming", "ReactPHP"],
+    "keywords": ["terminal", "control codes", "xterm", "csi", "osc", "apc", "dps", "pm", "C1", "C0", "streaming", "ReactPHP"],
     "homepage": "https://github.com/clue/php-term-react",
     "license": "MIT",
     "authors": [

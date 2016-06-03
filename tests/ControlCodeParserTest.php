@@ -36,6 +36,14 @@ class ControlCodeParserTest extends TestCase
         $this->assertEquals('helloworld', $buffer);
     }
 
+    public function testEmitsC0AsOneChunk()
+    {
+        $this->parser->on('data', $this->expectCallableNever());
+        $this->parser->on('c0', $this->expectCallableOnce("\n"));
+
+        $this->input->emit('data', array("\n"));
+    }
+
     public function testEmitsCsiAsOneChunk()
     {
         $this->parser->on('data', $this->expectCallableNever());
@@ -69,6 +77,14 @@ class ControlCodeParserTest extends TestCase
 
         $this->input->emit('data', array("\x1B[2"));
         $this->input->emit('data', array("A"));
+    }
+
+    public function testEmitsDataAndC0()
+    {
+        $this->parser->on('data', $this->expectCallableOnceWith("hello world"));
+        $this->parser->on('c0', $this->expectCallableOnceWith("\n"));
+
+        $this->input->emit('data', array("hello world\n"));
     }
 
     public function testEmitsCsiAndData()
