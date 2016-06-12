@@ -16,7 +16,7 @@ Streaming terminal emulator, built on top of React PHP
 ### ControlCodeParser
 
 The `ControlCodeParser(ReadableStreamInterface $input)` class can be used to
-parse any control code byte sequences when reading from an input stream and it
+parse any control code byte sequences (ANSI / VT100) when reading from an input stream and it
 only returns its plain data stream.
 It wraps a given `ReadableStreamInterface` and exposes its plain data through
 the same interface.
