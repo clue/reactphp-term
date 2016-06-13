@@ -87,6 +87,14 @@ class ControlCodeParserTest extends TestCase
         $this->input->emit('data', array("hello world\n"));
     }
 
+    public function testEmitsC0AndData()
+    {
+        $this->parser->on('data', $this->expectCallableOnceWith("hello world"));
+        $this->parser->on('c0', $this->expectCallableOnceWith("\t"));
+
+        $this->input->emit('data', array("\thello world"));
+    }
+
     public function testEmitsCsiAndData()
     {
         $this->parser->on('data', $this->expectCallableOnceWith("hello"));

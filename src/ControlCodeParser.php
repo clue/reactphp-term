@@ -131,7 +131,7 @@ class ControlCodeParser extends EventEmitter implements ReadableStreamInterface
                 $this->buffer = (string)substr($this->buffer, 1);
 
                 $this->emit('c0', array($data));
-                break;
+                continue;
             }
 
             // check following byte to determine type
