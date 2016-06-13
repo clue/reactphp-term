@@ -122,6 +122,18 @@ class ControlCodeParserTest extends TestCase
         $this->input->emit('data', array("hello\nworld"));
     }
 
+    public function testEmitsDataOnlyFirstChunkOfMultipleWhenClosingDuringFirstDataEvent()
+    {
+        // first data event is everything before control code
+        $first = $this->expectCallableOnceWith('hello');
+        $this->parser->on('data', $first);
+
+        // close the input stream on the first data event => no more data events
+        $this->parser->once('data', array($this->input, 'close'));
+
+        $this->input->emit('data', array("hello\nworld"));
+    }
+
     public function testEmitsC0AndData()
     {
         $this->parser->on('data', $this->expectCallableOnceWith("hello world"));
