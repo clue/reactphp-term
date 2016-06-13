@@ -87,6 +87,41 @@ class ControlCodeParserTest extends TestCase
         $this->input->emit('data', array("hello world\n"));
     }
 
+    public function testEmitsDataInTwoChunksWithC0InBetween()
+    {
+        // first data event is everything before control code
+        $first = $this->expectCallableOnceWith('hello');
+        $this->parser->once('data', $first);
+
+        // second data event will fire with remaining buffer
+        $second = $this->expectCallableOnceWith('world');
+        $parser = $this->parser;
+        $this->parser->once('data', function () use ($parser, $second) {
+            $parser->once('data', $second);
+        });
+
+        $this->input->emit('data', array("hello\nworld"));
+    }
+
+    public function testEmitsDataInTwoChunkWithC0InBetweenWhileAddingDuringDataEvent()
+    {
+        // first data event is everything before control code
+        $first = $this->expectCallableOnceWith('hello');
+        $this->parser->once('data', $first);
+
+        // second data event will fire with remaining buffer
+        // we write to buffer while processing the first event and expect the full buffer
+        $second = $this->expectCallableOnceWith('worldagain');
+        $input = $this->input;
+        $parser = $this->parser;
+        $this->parser->once('data', function () use ($input, $parser, $second) {
+            $parser->once('data', $second);
+            $input->emit('data', array('again'));
+        });
+
+        $this->input->emit('data', array("hello\nworld"));
+    }
+
     public function testEmitsC0AndData()
     {
         $this->parser->on('data', $this->expectCallableOnceWith("hello world"));
