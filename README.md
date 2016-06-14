@@ -8,6 +8,7 @@ Streaming terminal emulator, built on top of React PHP
   * [ControlCodeParser](#controlcodeparser)
 * [Install](#install)
 * [License](#license)
+* [More](#more)
 
 > Note: This project is in beta stage! Feel free to report any issues you encounter.
 
@@ -115,3 +116,21 @@ See also the [CHANGELOG](CHANGELOG.md) for details about version upgrades.
 ## License
 
 MIT
+
+## More
+
+* If you want to learn more about processing streams of data, refer to the documentation of
+  the underlying [react/stream](https://github.com/reactphp/stream) component.
+
+* If you want to process UTF-8 encoded console input, you may
+  want to use [clue/utf8-react](https://github.com/clue/php-utf8-react) on the resulting
+  plain data stream.
+
+* If you want to to display or inspect the control codes, you may
+  want to use either [clue/hexdump](https://github.com/clue/php-hexdump) or
+  [clue/caret-notation](https://github.com/clue/php-caret-notation) on the emitted
+  control byte sequences.
+
+* If you want to process standard input and output (STDIN and STDOUT) from a TTY, you may
+  want to use [clue/stdio-react](https://github.com/clue/php-stdio-react) instead of
+  using this low-level library.
