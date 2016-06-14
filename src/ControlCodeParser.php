@@ -84,6 +84,7 @@ class ControlCodeParser extends EventEmitter implements ReadableStreamInterface
         }
 
         $this->closed = true;
+        $this->buffer = '';
 
         $this->input->close();
 
