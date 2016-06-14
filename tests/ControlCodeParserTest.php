@@ -238,6 +238,16 @@ class ControlCodeParserTest extends TestCase
         $this->assertFalse($this->parser->isReadable());
     }
 
+    public function testClosingInputWillRemoveAllDataListeners()
+    {
+        $this->parser->on('data', $this->expectCallableNever());
+
+        $this->input->close();
+
+        $this->assertEquals(array(), $this->input->listeners('data'));
+        $this->assertEquals(array(), $this->parser->listeners('data'));
+    }
+
     public function testClosingParserWillCloseInput()
     {
         $this->input = $this->getMock('React\Stream\ReadableStreamInterface');
@@ -250,6 +260,19 @@ class ControlCodeParserTest extends TestCase
         $this->parser->close();
 
         $this->assertFalse($this->parser->isReadable());
+    }
+
+    public function testClosingParserWillRemoveAllDataListeners()
+    {
+        $this->input = new ReadableStream();
+        $this->parser = new ControlCodeParser($this->input);
+
+        $this->parser->on('data', $this->expectCallableNever());
+
+        $this->parser->close();
+
+        $this->assertEquals(array(), $this->input->listeners('data'));
+        $this->assertEquals(array(), $this->parser->listeners('data'));
     }
 
     public function testClosingParserMultipleTimesWillOnlyCloseOnce()
@@ -273,6 +296,17 @@ class ControlCodeParserTest extends TestCase
         $this->parser = new ControlCodeParser($this->input);
 
         $this->assertFalse($this->parser->isReadable());
+    }
+
+    public function testPassingClosedInputToParserWillNotAddAnyDataListeners()
+    {
+        $this->input = new ReadableStream();
+        $this->input->close();
+
+        $this->parser = new ControlCodeParser($this->input);
+
+        $this->assertEquals(array(), $this->input->listeners('data'));
+        $this->assertEquals(array(), $this->parser->listeners('data'));
     }
 
     public function testWillForwardPauseToInput()

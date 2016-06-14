@@ -46,7 +46,7 @@ class ControlCodeParser extends EventEmitter implements ReadableStreamInterface
         $this->input = $input;
 
         if (!$this->input->isReadable()) {
-            $this->close();
+            return $this->close();
         }
 
         $this->input->on('data', array($this, 'handleData'));
@@ -89,6 +89,7 @@ class ControlCodeParser extends EventEmitter implements ReadableStreamInterface
         $this->input->close();
 
         $this->emit('close');
+        $this->removeAllListeners();
     }
 
     /** @internal */
