@@ -8,9 +8,10 @@
 // codes like this:
 // $ phpunit --color=always | php remove-codes.php
 
-use React\Stream\Stream;
 use React\EventLoop\Factory;
 use Clue\React\Term\ControlCodeParser;
+use React\Stream\ReadableResourceStream;
+use React\Stream\WritableResourceStream;
 
 require __DIR__ . '/../vendor/autoload.php';
 
@@ -22,13 +23,11 @@ if (function_exists('posix_isatty') && posix_isatty(STDIN)) {
 }
 
 // process control codes from STDIN
-$stdin = new Stream(STDIN, $loop);
+$stdin = new ReadableResourceStream(STDIN, $loop);
 $parser = new ControlCodeParser($stdin);
 
-$stdout = new Stream(STDOUT, $loop);
-$stdout->pause();
-
 // pipe data from STDIN to STDOUT without any codes
+$stdout = new WritableResourceStream(STDOUT, $loop);
 $parser->pipe($stdout);
 
 // only forward \r, \n and \t

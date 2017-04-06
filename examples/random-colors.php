@@ -11,9 +11,10 @@
 // with random colors:
 // $ phpunit --color=always | php random-colors.php
 
-use React\Stream\Stream;
 use React\EventLoop\Factory;
 use Clue\React\Term\ControlCodeParser;
+use React\Stream\ReadableResourceStream;
+use React\Stream\WritableResourceStream;
 
 require __DIR__ . '/../vendor/autoload.php';
 
@@ -25,11 +26,10 @@ if (function_exists('posix_isatty') && posix_isatty(STDIN)) {
 }
 
 // process control codes from STDIN
-$stdin = new Stream(STDIN, $loop);
+$stdin = new ReadableResourceStream(STDIN, $loop);
 $parser = new ControlCodeParser($stdin);
 
-$stdout = new Stream(STDOUT, $loop);
-$stdout->pause();
+$stdout = new WritableResourceStream(STDOUT, $loop);
 
 // pass all c0 codes through to output
 $parser->on('c0', array($stdout, 'write'));

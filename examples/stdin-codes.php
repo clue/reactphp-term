@@ -9,9 +9,9 @@
 // codes like this:
 // $ phpunit --color=always | php stdin-codes.php
 
-use React\Stream\Stream;
 use React\EventLoop\Factory;
 use Clue\React\Term\ControlCodeParser;
+use React\Stream\ReadableResourceStream;
 
 require __DIR__ . '/../vendor/autoload.php';
 
@@ -23,7 +23,7 @@ if (function_exists('posix_isatty') && posix_isatty(STDIN)) {
 }
 
 // process control codes from STDIN
-$stdin = new Stream(STDIN, $loop);
+$stdin = new ReadableResourceStream(STDIN, $loop);
 $parser = new ControlCodeParser($stdin);
 
 $decoder = function ($code) {
