@@ -1,6 +1,6 @@
 # clue/term-react [![Build Status](https://travis-ci.org/clue/php-term-react.svg?branch=master)](https://travis-ci.org/clue/php-term-react)
 
-Streaming terminal emulator, built on top of React PHP
+Streaming terminal emulator, built on top of [ReactPHP](https://reactphp.org/)
 
 **Table of Contents**
 
