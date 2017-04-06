@@ -10,7 +10,7 @@ class FunctionalControlCodeParserTest extends TestCase
     {
         $loop = Factory::create();
 
-        $input = new Stream(fopen(__DIR__ . '/../README.md', 'r'), $loop);
+        $input = new Stream(fopen(__DIR__ . '/../README.md', 'r+'), $loop);
         $parser = new ControlCodeParser($input);
 
         $buffer = '';
