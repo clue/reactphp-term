@@ -11,8 +11,6 @@ Streaming terminal emulator, built on top of React PHP
 * [License](#license)
 * [More](#more)
 
-> Note: This project is in beta stage! Feel free to report any issues you encounter.
-
 ## Usage
 
 ### ControlCodeParser
@@ -109,7 +107,7 @@ The recommended way to install this library is [through Composer](https://getcom
 This will install the latest supported version:
 
 ```bash
-$ composer require clue/term-react:^0.1.3
+$ composer require clue/term-react:^1.0
 ```
 
 See also the [CHANGELOG](CHANGELOG.md) for details about version upgrades.

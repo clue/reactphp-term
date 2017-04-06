@@ -1,5 +1,11 @@
 # Changelog
 
+## 1.0.0 (2017-04-06)
+
+*   First stable release, now following SemVer
+
+    > Contains no other changes, so it's actually fully compatible with the v0.1 releases.
+
 ## 0.1.3 (2017-04-06)
 
 *   Feature: Forward compatibility with Stream v0.6 and v0.5 (while keeping BC)
