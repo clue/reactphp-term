@@ -250,7 +250,7 @@ class ControlCodeParserTest extends TestCase
 
     public function testClosingParserWillCloseInput()
     {
-        $this->input = $this->getMock('React\Stream\ReadableStreamInterface');
+        $this->input = $this->getMockBuilder('React\Stream\ReadableStreamInterface')->getMock();
         $this->input->expects($this->once())->method('isReadable')->willReturn(true);
         $this->input->expects($this->once())->method('close');
 
@@ -277,7 +277,7 @@ class ControlCodeParserTest extends TestCase
 
     public function testClosingParserMultipleTimesWillOnlyCloseOnce()
     {
-        $this->input = $this->getMock('React\Stream\ReadableStreamInterface');
+        $this->input = $this->getMockBuilder('React\Stream\ReadableStreamInterface')->getMock();
         $this->input->expects($this->once())->method('isReadable')->willReturn(true);
         $this->input->expects($this->once())->method('close');
 
@@ -290,7 +290,7 @@ class ControlCodeParserTest extends TestCase
 
     public function testPassingClosedInputToParserWillCloseParser()
     {
-        $this->input = $this->getMock('React\Stream\ReadableStreamInterface');
+        $this->input = $this->getMockBuilder('React\Stream\ReadableStreamInterface')->getMock();
         $this->input->expects($this->once())->method('isReadable')->willReturn(false);
 
         $this->parser = new ControlCodeParser($this->input);
@@ -311,7 +311,7 @@ class ControlCodeParserTest extends TestCase
 
     public function testWillForwardPauseToInput()
     {
-        $this->input = $this->getMock('React\Stream\ReadableStreamInterface');
+        $this->input = $this->getMockBuilder('React\Stream\ReadableStreamInterface')->getMock();
         $this->input->expects($this->once())->method('pause');
 
         $this->parser = new ControlCodeParser($this->input);
@@ -321,7 +321,7 @@ class ControlCodeParserTest extends TestCase
 
     public function testWillForwardResumeToInput()
     {
-        $this->input = $this->getMock('React\Stream\ReadableStreamInterface');
+        $this->input = $this->getMockBuilder('React\Stream\ReadableStreamInterface')->getMock();
         $this->input->expects($this->once())->method('resume');
 
         $this->parser = new ControlCodeParser($this->input);
@@ -331,7 +331,7 @@ class ControlCodeParserTest extends TestCase
 
     public function testPipeWillReturnDestStream()
     {
-        $dest = $this->getMock('React\Stream\WritableStreamInterface');
+        $dest = $this->getMockBuilder('React\Stream\WritableStreamInterface')->getMock();
 
         $ret = $this->parser->pipe($dest);
 

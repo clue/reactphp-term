@@ -7,6 +7,7 @@ Streaming terminal emulator, built on top of React PHP
 * [Usage](#usage)
   * [ControlCodeParser](#controlcodeparser)
 * [Install](#install)
+* [Tests](#tests)
 * [License](#license)
 * [More](#more)
 
@@ -112,6 +113,21 @@ $ composer require clue/term-react:^0.1
 ```
 
 See also the [CHANGELOG](CHANGELOG.md) for details about version upgrades.
+
+## Tests
+
+To run the test suite, you first need to clone this repo and then install all
+dependencies [through Composer](http://getcomposer.org):
+
+```bash
+$ composer install
+```
+
+To run the test suite, go to the project root and run:
+
+```bash
+$ php vendor/bin/phpunit
+```
 
 ## License
 
