@@ -24,7 +24,7 @@ It wraps a given `ReadableStreamInterface` and exposes its plain data through
 the same interface.
 
 ```php
-$stdin = new Stream(STDIN, $loop);
+$stdin = new ReadableResourceStream(STDIN, $loop);
 
 $stream = new ControlCodeParser($stdin);
 
