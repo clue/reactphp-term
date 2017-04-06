@@ -1,5 +1,13 @@
 # Changelog
 
+## 0.1.3 (2017-04-06)
+
+*   Feature: Forward compatibility with Stream v0.6 and v0.5 (while keeping BC)
+    (#18 and #20 by @clue)
+
+*   Improve test suite by adding PHPUnit to require-dev
+    (#19 by @clue)
+
 ## 0.1.2 (2016-06-14)
 
 *   Fix: Fix processing events when input writes during data event
