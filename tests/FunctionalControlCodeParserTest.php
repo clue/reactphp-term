@@ -1,8 +1,8 @@
 <?php
 
-use React\EventLoop\Factory;
-use React\Stream\Stream;
 use Clue\React\Term\ControlCodeParser;
+use React\EventLoop\Factory;
+use React\Stream\ReadableResourceStream;
 
 class FunctionalControlCodeParserTest extends TestCase
 {
@@ -10,7 +10,7 @@ class FunctionalControlCodeParserTest extends TestCase
     {
         $loop = Factory::create();
 
-        $input = new Stream(fopen(__DIR__ . '/../README.md', 'r+'), $loop);
+        $input = new ReadableResourceStream(fopen(__DIR__ . '/../README.md', 'r+'), $loop);
         $parser = new ControlCodeParser($input);
 
         $buffer = '';
