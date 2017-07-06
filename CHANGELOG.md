@@ -1,5 +1,13 @@
 # Changelog
 
+# 1.1.0 (2017-07-06)
+
+*   Feature: Forward compatibility with Stream v1.0 and v0.7 (while keeping BC)
+    (#22 by @Yoshi2889 and #23 by @WyriHaximus)
+
+*   Improve test suite by fixing HHVM builds and ignoring future errors
+    (#24 by @clue)
+
 ## 1.0.0 (2017-04-06)
 
 *   First stable release, now following SemVer
