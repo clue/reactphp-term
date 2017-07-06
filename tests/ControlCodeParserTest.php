@@ -1,7 +1,7 @@
 <?php
 
-use React\Stream\ReadableStream;
 use Clue\React\Term\ControlCodeParser;
+use React\Stream\ThroughStream;
 
 class ControlCodeParserTest extends TestCase
 {
@@ -10,7 +10,7 @@ class ControlCodeParserTest extends TestCase
 
     public function setUp()
     {
-        $this->input = new ReadableStream();
+        $this->input = new ThroughStream();
         $this->parser = new ControlCodeParser($this->input);
     }
 
@@ -264,7 +264,7 @@ class ControlCodeParserTest extends TestCase
 
     public function testClosingParserWillRemoveAllDataListeners()
     {
-        $this->input = new ReadableStream();
+        $this->input = new ThroughStream();
         $this->parser = new ControlCodeParser($this->input);
 
         $this->parser->on('data', $this->expectCallableNever());
@@ -300,7 +300,7 @@ class ControlCodeParserTest extends TestCase
 
     public function testPassingClosedInputToParserWillNotAddAnyDataListeners()
     {
-        $this->input = new ReadableStream();
+        $this->input = new ThroughStream();
         $this->input->close();
 
         $this->parser = new ControlCodeParser($this->input);
