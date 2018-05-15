@@ -1,4 +1,4 @@
-# clue/term-react [![Build Status](https://travis-ci.org/clue/php-term-react.svg?branch=master)](https://travis-ci.org/clue/php-term-react)
+# clue/reactphp-term [![Build Status](https://travis-ci.org/clue/reactphp-term.svg?branch=master)](https://travis-ci.org/clue/reactphp-term)
 
 Streaming terminal emulator, built on top of [ReactPHP](https://reactphp.org/)
 
@@ -137,7 +137,7 @@ MIT
   the underlying [react/stream](https://github.com/reactphp/stream) component.
 
 * If you want to process UTF-8 encoded console input, you may
-  want to use [clue/utf8-react](https://github.com/clue/php-utf8-react) on the resulting
+  want to use [clue/reactphp-utf8](https://github.com/clue/reactphp-utf8) on the resulting
   plain data stream.
 
 * If you want to to display or inspect the control codes, you may
@@ -146,5 +146,5 @@ MIT
   control byte sequences.
 
 * If you want to process standard input and output (STDIN and STDOUT) from a TTY, you may
-  want to use [clue/stdio-react](https://github.com/clue/php-stdio-react) instead of
+  want to use [clue/reactphp-stdio](https://github.com/clue/reactphp-stdio) instead of
   using this low-level library.
