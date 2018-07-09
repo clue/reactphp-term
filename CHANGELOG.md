@@ -1,6 +1,17 @@
 # Changelog
 
-# 1.1.0 (2017-07-06)
+## 1.2.0 (2018-07-09)
+
+*   Feature: Forward compatiblity with EventLoop v0.5 and upcoming v1.0.
+    (#28 by @clue)
+
+*   Improve test suite by updating Travis config to test against legacy PHP 5.3 through PHP 7.2.
+    (#27 by @clue)
+
+*   Update project homepage.
+    (#26 by @clue)
+
+## 1.1.0 (2017-07-06)
 
 *   Feature: Forward compatibility with Stream v1.0 and v0.7 (while keeping BC)
     (#22 by @Yoshi2889 and #23 by @WyriHaximus)
