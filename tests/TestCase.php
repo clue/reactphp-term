@@ -1,10 +1,8 @@
 <?php
 
-require_once __DIR__ . '/../vendor/autoload.php';
+namespace Clue\Tests\React\Term;
 
-error_reporting(-1);
-
-class TestCase extends PHPUnit_Framework_TestCase
+class TestCase extends \PHPUnit\Framework\TestCase
 {
     protected function expectCallableNever()
     {
@@ -53,14 +51,6 @@ class TestCase extends PHPUnit_Framework_TestCase
      */
     protected function createCallableMock()
     {
-        return $this->getMockBuilder('CallableStub')->getMock();
+        return $this->getMockBuilder('stdClass')->setMethods(array('__invoke'))->getMock();
     }
 }
-
-class CallableStub
-{
-    public function __invoke()
-    {
-    }
-}
-

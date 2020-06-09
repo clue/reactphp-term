@@ -1,5 +1,7 @@
 <?php
 
+namespace Clue\Tests\React\Term;
+
 use Clue\React\Term\ControlCodeParser;
 use React\EventLoop\Factory;
 use React\Stream\ReadableResourceStream;
