@@ -8,7 +8,10 @@ class ControlCodeParserTest extends TestCase
     private $input;
     private $parser;
 
-    public function setUp()
+    /**
+     * @before
+     */
+    public function setUpParser()
     {
         $this->input = new ThroughStream();
         $this->parser = new ControlCodeParser($this->input);
