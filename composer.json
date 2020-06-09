@@ -13,6 +13,9 @@
     "autoload": {
         "psr-4": { "Clue\\React\\Term\\": "src/" }
     },
+    "autoload-dev": {
+        "psr-4": { "Clue\\Tests\\React\\Term\\": "tests/" }
+    },
     "require": {
         "php": ">=5.3",
         "react/stream": "^1.0 || ^0.7"
