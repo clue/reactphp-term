@@ -1,13 +1,13 @@
 {
     "name": "clue/term-react",
-    "description": "Streaming terminal emulator, built on top of ReactPHP",
+    "description": "Streaming terminal emulator, built on top of ReactPHP.",
     "keywords": ["terminal", "control codes", "xterm", "ANSI", "ASCII", "VT100", "csi", "osc", "apc", "dps", "pm", "C1", "C0", "streaming", "ReactPHP"],
     "homepage": "https://github.com/clue/reactphp-term",
     "license": "MIT",
     "authors": [
         {
             "name": "Christian Lück",
-            "email": "christian@lueck.tv"
+            "email": "christian@clue.engineering"
         }
     ],
     "autoload": {
