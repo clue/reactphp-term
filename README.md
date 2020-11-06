@@ -1,15 +1,26 @@
 # clue/reactphp-term [![Build Status](https://travis-ci.org/clue/reactphp-term.svg?branch=master)](https://travis-ci.org/clue/reactphp-term)
 
-Streaming terminal emulator, built on top of [ReactPHP](https://reactphp.org/)
+Streaming terminal emulator, built on top of [ReactPHP](https://reactphp.org/).
 
 **Table of Contents**
 
+* [Support us](#support-us)
 * [Usage](#usage)
   * [ControlCodeParser](#controlcodeparser)
 * [Install](#install)
 * [Tests](#tests)
 * [License](#license)
 * [More](#more)
+
+## Support us
+
+We invest a lot of time developing, maintaining and updating our awesome
+open-source projects. You can help us sustain this high-quality of our work by
+[becoming a sponsor on GitHub](https://github.com/sponsors/clue). Sponsors get
+numerous benefits in return, see our [sponsoring page](https://github.com/sponsors/clue)
+for details.
+
+Let's take these projects to the next level together! 🚀
 
 ## Usage
 
@@ -108,7 +119,8 @@ This project follows [SemVer](https://semver.org/).
 This will install the latest supported version:
 
 ```bash
-$ composer require clue/term-react:^1.2
+$ composer require clue/term-react:^1.3
+
 ```
 
 See also the [CHANGELOG](CHANGELOG.md) for details about version upgrades.

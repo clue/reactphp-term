@@ -1,5 +1,11 @@
 # Changelog
 
+## 1.3.0 (2020-11-06)
+
+*   Improve test suite and add `.gitattributes` to exclude dev files from export.
+    Prepare PHP 8 support, update to PHPUnit 9 and simplify test matrix.
+    (#29 and #30 by @SimonFrings)
+
 ## 1.2.0 (2018-07-09)
 
 *   Feature: Forward compatiblity with EventLoop v0.5 and upcoming v1.0.
