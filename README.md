@@ -1,4 +1,6 @@
-# clue/reactphp-term [![Build Status](https://travis-ci.org/clue/reactphp-term.svg?branch=master)](https://travis-ci.org/clue/reactphp-term)
+# clue/reactphp-term
+
+[![CI status](https://github.com/clue/reactphp-term/workflows/CI/badge.svg)](https://github.com/clue/reactphp-term/actions)
 
 Streaming terminal emulator, built on top of [ReactPHP](https://reactphp.org/).
 
