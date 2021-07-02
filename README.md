@@ -1,6 +1,7 @@
 # clue/reactphp-term
 
 [![CI status](https://github.com/clue/reactphp-term/workflows/CI/badge.svg)](https://github.com/clue/reactphp-term/actions)
+[![installs on Packagist](https://img.shields.io/packagist/dt/clue/term-react?color=blue&label=installs%20on%20Packagist)](https://packagist.org/packages/clue/term-react)
 
 Streaming terminal emulator, built on top of [ReactPHP](https://reactphp.org/).
 
