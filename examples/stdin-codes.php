@@ -9,13 +9,10 @@
 // codes like this:
 // $ phpunit --color=always | php stdin-codes.php
 
-use React\EventLoop\Factory;
 use Clue\React\Term\ControlCodeParser;
 use React\Stream\ReadableResourceStream;
 
 require __DIR__ . '/../vendor/autoload.php';
-
-$loop = Factory::create();
 
 if (function_exists('posix_isatty') && posix_isatty(STDIN)) {
     // Disable icanon (so we can fread each keypress) and echo (we'll do echoing here instead)
@@ -23,7 +20,7 @@ if (function_exists('posix_isatty') && posix_isatty(STDIN)) {
 }
 
 // process control codes from STDIN
-$stdin = new ReadableResourceStream(STDIN, $loop);
+$stdin = new ReadableResourceStream(STDIN);
 $parser = new ControlCodeParser($stdin);
 
 $decoder = function ($code) {
@@ -42,5 +39,3 @@ $parser->on('c0', $decoder);
 $parser->on('data', function ($bytes) {
     echo 'Data: ' . $bytes . PHP_EOL;
 });
-
-$loop->run();
