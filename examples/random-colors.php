@@ -11,14 +11,11 @@
 // with random colors:
 // $ phpunit --color=always | php random-colors.php
 
-use React\EventLoop\Factory;
 use Clue\React\Term\ControlCodeParser;
 use React\Stream\ReadableResourceStream;
 use React\Stream\WritableResourceStream;
 
 require __DIR__ . '/../vendor/autoload.php';
-
-$loop = Factory::create();
 
 if (function_exists('posix_isatty') && posix_isatty(STDIN)) {
     // Disable icanon (so we can fread each keypress) and echo (we'll do echoing here instead)
@@ -26,10 +23,10 @@ if (function_exists('posix_isatty') && posix_isatty(STDIN)) {
 }
 
 // process control codes from STDIN
-$stdin = new ReadableResourceStream(STDIN, $loop);
+$stdin = new ReadableResourceStream(STDIN);
 $parser = new ControlCodeParser($stdin);
 
-$stdout = new WritableResourceStream(STDOUT, $loop);
+$stdout = new WritableResourceStream(STDOUT);
 
 // pass all c0 codes through to output
 $parser->on('c0', array($stdout, 'write'));
@@ -55,5 +52,3 @@ $parser->pipe($stdout, array('end' => false));
 
 // start with random color
 $stdin->emit('data', array("\033[m"));
-
-$loop->run();

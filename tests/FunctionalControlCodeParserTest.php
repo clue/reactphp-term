@@ -3,16 +3,14 @@
 namespace Clue\Tests\React\Term;
 
 use Clue\React\Term\ControlCodeParser;
-use React\EventLoop\Factory;
+use React\EventLoop\Loop;
 use React\Stream\ReadableResourceStream;
 
 class FunctionalControlCodeParserTest extends TestCase
 {
     public function testPipingReadme()
     {
-        $loop = Factory::create();
-
-        $input = new ReadableResourceStream(fopen(__DIR__ . '/../README.md', 'r+'), $loop);
+        $input = new ReadableResourceStream(fopen(__DIR__ . '/../README.md', 'r+'));
         $parser = new ControlCodeParser($input);
 
         $buffer = '';
@@ -20,7 +18,7 @@ class FunctionalControlCodeParserTest extends TestCase
             $buffer .= $chunk;
         });
 
-        $loop->run();
+        Loop::run();
 
         $readme = str_replace(
             "\n",

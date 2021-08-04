@@ -8,14 +8,11 @@
 // codes like this:
 // $ phpunit --color=always | php remove-codes.php
 
-use React\EventLoop\Factory;
 use Clue\React\Term\ControlCodeParser;
 use React\Stream\ReadableResourceStream;
 use React\Stream\WritableResourceStream;
 
 require __DIR__ . '/../vendor/autoload.php';
-
-$loop = Factory::create();
 
 if (function_exists('posix_isatty') && posix_isatty(STDIN)) {
     // Disable icanon (so we can fread each keypress) and echo (we'll do echoing here instead)
@@ -23,11 +20,11 @@ if (function_exists('posix_isatty') && posix_isatty(STDIN)) {
 }
 
 // process control codes from STDIN
-$stdin = new ReadableResourceStream(STDIN, $loop);
+$stdin = new ReadableResourceStream(STDIN);
 $parser = new ControlCodeParser($stdin);
 
 // pipe data from STDIN to STDOUT without any codes
-$stdout = new WritableResourceStream(STDOUT, $loop);
+$stdout = new WritableResourceStream(STDOUT);
 $parser->pipe($stdout);
 
 // only forward \r, \n and \t
@@ -36,5 +33,3 @@ $parser->on('c0', function ($code) use ($stdout) {
         $stdout->write($code);
     }
 });
-
-$loop->run();

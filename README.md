@@ -36,7 +36,7 @@ It wraps a given `ReadableStreamInterface` and exposes its plain data through
 the same interface.
 
 ```php
-$stdin = new ReadableResourceStream(STDIN, $loop);
+$stdin = new React\Stream\ReadableResourceStream(STDIN);
 
 $stream = new ControlCodeParser($stdin);
 
