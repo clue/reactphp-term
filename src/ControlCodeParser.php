@@ -175,15 +175,7 @@ class ControlCodeParser extends EventEmitter implements ReadableStreamInterface
                         break;
                     }
                 }
-            } else if ($type === 'ss2') {
-                // SS2 shift 2 bytes from buffer
-                $data = substr($this->buffer, 0, 2);
-                $this->buffer = (string) substr($this->buffer, 2);
-
-                $this->emit($type, array($data));
-                $found = true;
-            } else if ($type === 'ss3') {
-                // SS3 shift 3 bytes from buffer
+            } else if ($type === 'ss2' || $type === 'ss3') {
                 $data = substr($this->buffer, 0, 3);
                 $this->buffer = (string) substr($this->buffer, 3);
 
