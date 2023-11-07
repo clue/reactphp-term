@@ -8,7 +8,7 @@
 
 ## 1.2.0 (2018-07-09)
 
-*   Feature: Forward compatiblity with EventLoop v0.5 and upcoming v1.0.
+*   Feature: Forward compatibility with EventLoop v0.5 and upcoming v1.0.
     (#28 by @clue)
 
 *   Improve test suite by updating Travis config to test against legacy PHP 5.3 through PHP 7.2.
