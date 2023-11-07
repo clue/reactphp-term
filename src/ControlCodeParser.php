@@ -31,7 +31,7 @@ class ControlCodeParser extends EventEmitter implements ReadableStreamInterface
      * C1 types in 8 bit are currently not supported, as they require special
      * care with regards to whether UTF-8 mode is enabled. So far this has
      * turned out to be a non-issue because most terminal emulators *accept*
-     * boths formats, but usually *send* in 7 bit mode exclusively.
+     * both formats, but usually *send* in 7 bit mode exclusively.
      */
     private $types = array(
         '[' => 'csi',
