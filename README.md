@@ -36,9 +36,13 @@ It wraps a given `ReadableStreamInterface` and exposes its plain data through
 the same interface.
 
 ```php
+<?php
+
+require __DIR__ . '/vendor/autoload.php';
+
 $stdin = new React\Stream\ReadableResourceStream(STDIN);
 
-$stream = new ControlCodeParser($stdin);
+$stream = new Clue\React\Term\ControlCodeParser($stdin);
 
 $stream->on('data', function ($chunk) {
     var_dump($chunk);
