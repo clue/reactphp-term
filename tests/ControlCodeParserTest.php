@@ -226,6 +226,38 @@ class ControlCodeParserTest extends TestCase
         $this->input->emit('data', array("\x1BPasd\x07"));
     }
 
+    public function testEmitsSs2AndData()
+    {
+        $this->parser->on('data', $this->expectCallableOnceWith('hello'));
+        $this->parser->on('ss2', $this->expectCallableOnceWith("\x1BNE"));
+
+        $this->input->emit('data', array("\x1BNEhello"));
+    }
+
+    public function testEmitsDataAndSs2()
+    {
+        $this->parser->on('data', $this->expectCallableOnceWith('hello'));
+        $this->parser->on('ss2', $this->expectCallableOnceWith("\x1BNE"));
+
+        $this->input->emit('data', array("hello\x1BNE"));
+    }
+
+    public function testEmitsSs3AndData()
+    {
+        $this->parser->on('data', $this->expectCallableOnceWith('hello'));
+        $this->parser->on('ss3', $this->expectCallableOnceWith("\x1BOP"));
+
+        $this->input->emit('data', array("\x1BOPhello"));
+    }
+
+    public function testEmitsDataAndSs3()
+    {
+        $this->parser->on('data', $this->expectCallableOnceWith('hello'));
+        $this->parser->on('ss3', $this->expectCallableOnceWith("\x1BOP"));
+
+        $this->input->emit('data', array("hello\x1BOP"));
+    }
+
     public function testEmitsUnknownC1AsOneChunk()
     {
         $this->parser->on('data', $this->expectCallableNever());

@@ -21,6 +21,8 @@ class ControlCodeParser extends EventEmitter implements ReadableStreamInterface
      * followed by "_" means it's APC (Application Program-Control)
      * followed by "P" means it's DPS (Device-Control string)
      * followed by "^" means it's PM (Privacy Message)
+     * followed by "N" means it's SS2 (Single Shift 2)
+     * followed by "O" means it's SS3 (Single Shift 3)
      *
      * Each of these will be parsed until the sequence ends and then emitted
      * under their respective name.
@@ -39,6 +41,8 @@ class ControlCodeParser extends EventEmitter implements ReadableStreamInterface
         '_' => 'apc',
         'P' => 'dps',
         '^' => 'pm',
+        'N' => 'ss2',
+        'O' => 'ss3',
     );
 
     public function __construct(ReadableStreamInterface $input)
@@ -171,6 +175,12 @@ class ControlCodeParser extends EventEmitter implements ReadableStreamInterface
                         break;
                     }
                 }
+            } else if ($type === 'ss2' || $type === 'ss3') {
+                $data = substr($this->buffer, 0, 3);
+                $this->buffer = (string) substr($this->buffer, 3);
+
+                $this->emit($type, array($data));
+                $found = true;
             } else {
                 // all other types are terminated by ST
                 // only OSC can also be terminted by BEL (whichever comes first)

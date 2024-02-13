@@ -79,6 +79,12 @@ are supported as defined in [ISO/IEC 2022](https://en.wikipedia.org/wiki/ISO/IEC
 
 * PM (Privacy Message)
 
+* SS2 (Single Shift 2)
+  this means select the following character form the G2 character set
+
+* SS3 (Single Shift 3)
+  this means select the following character form the G3 character set
+
 Each code sequence gets emitted with a dedicated event with its raw byte sequence:
 
 ```php
@@ -94,6 +100,8 @@ $stream->on('osc', function ($sequence) { … });
 $stream->on('apc', function ($sequence) { … });
 $stream->on('dps', function ($sequence) { … });
 $stream->on('pm', function ($sequence) { … });
+$stream->on('ss2', function ($sequence) { … });
+$stream->on('ss3', function ($sequence) { … });
 ```
 
 Other lesser known [C1 control codes](https://en.wikipedia.org/wiki/C0_and_C1_control_codes#C1_set)
